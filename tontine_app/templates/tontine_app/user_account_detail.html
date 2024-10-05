@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container p-5 md:pl-12 mx-auto sm:p-4 dark:text-gray-800 overflow-x-auto">
+    <div class="overflow-x-auto">
+        <table class="min-w-full text-xs">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col class="w-15">
+            </colgroup>
+            <thead class="dark:bg-gray-300">
+                <tr class="text-left">
+                    <th class="p-3">Date de transaction</th>
+                    <th class="p-3">Date d'application</th>
+                    <th class="p-3 text-right">Montant</th>
+                    <th class="p-3 text-right">Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr class="border-b border-opacity-20 dark:border-gray-300 dark:bg-gray-50">
+
+                    <td class="p-3">
+                        <p>{{ transaction.transaction_date }}</p>
+                    </td>
+                    <td class="p-3">
+                        <p>{{ transaction.created_at|date:"Y-m-d" }}</p>
+                    </td>
+                    <td class="p-3 text-right">
+                        <p>{{ transaction.amount }}</p>
+                    </td>
+                    <td class="p-3 text-right">
+                        {% if transaction.transaction_type == 'deposit' %}
+
+                        <span class="px-3 py-1 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50">
+                            <span>Dépot</span>
+                        </span>
+
+                        {% else %}
+
+                        <span class="px-3 py-1 font-semibold rounded-md dark:bg-red-600 dark:text-gray-50">
+                            {% if transaction.status == 'pending' %}
+
+                            <span>{{ transaction.status }}</span>
+
+                            {% elif transaction.status == 'canceled' %}
+                            <span>Annuler</span>
+
+                            {% else %}
+
+                            <span>Retrait</span>
+
+                            {% endif %}
+
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

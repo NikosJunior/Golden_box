@@ -5,12 +5,14 @@
 <div class=" p-6 bg-gray-100 flex items-center justify-center overflow-auto">
     <div class="container max-w-screen-lg mx-auto">
         <div>
-            <h2 class="font-semibold text-xl text-gray-600 mb-6 mt-7">Modifier les informations du client</h2>
+            <h2 class="font-semibold text-xl text-gray-600 mb-6 mt-7">Modifier les informations </h2>
 
             <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                     <div class="text-gray-600">
-                        <p class="font-medium text-lg">Information du client</p>
+                        <p class="font-medium text-lg">
+                            Information
+                        </p>
                         <p>Entrez tous les Informations</p>
                     </div>
 
@@ -32,13 +34,13 @@
                                         <label for="full_name">Prénom</label>
                                         <input type="text" name="first_name" id="full_name"
                                             class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                                            value="{{user.first_name}}" />
+                                            value="{{user_to_update.first_name}}" />
                                     </div>
                                     <div class="">
                                         <label for="full_name">Nom</label>
                                         <input type="text" name="last_name" id="full_name"
                                             class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                                            value="{{user.last_name}}" />
+                                            value="{{user_to_update.last_name}}" />
                                     </div>
                                 </div>
                                 <div class="md:col-span-5 flex flex-col md:flex-row">
@@ -46,14 +48,14 @@
                                         <label for="email">Email Address</label>
                                         <input type="text" name="email" id="email"
                                             class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                                            value="{{user.email}}" placeholder="email@domain.com" />
+                                            value="{{user_to_update.email}}" placeholder="email@domain.com" />
                                     </div>
 
                                     <div class="md:col-span-2">
                                         <label>Contact</label>
                                         <input type="text" name="contact" id="contact"
                                             class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                                            value="{{user.contact}}" placeholder="" />
+                                            value="{{user_to_update.contact}}" placeholder="" />
                                     </div>
                                 </div>
 
@@ -61,7 +63,7 @@
                                 <div class="md:col-span-2">
                                     <label for="address">Address / Street</label>
                                     <input type="text" name="address" id="address"
-                                        class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="{{user.address}}"
+                                        class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="{{user_to_update.address}}"
                                         placeholder="" />
                                 </div>
 

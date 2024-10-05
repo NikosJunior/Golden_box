@@ -1,0 +1,144 @@
+{% extends 'base_.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="antialiased bg-gray-100 text-gray-600 min-h-screen p-4 overflow-auto">
+    <div class="h-full">
+        <!-- Pay component -->
+        <div>
+
+            <!-- Card body -->
+            <div class="relative px-4 sm:px-6 lg:px-8 pb-8 max-w-lg mx-auto" x-data="{ card: true }">
+                <div class="bg-white px-8 pb-6 rounded-b shadow-lg">
+
+
+
+                    <!-- Toggle -->
+                    <div class="flex justify-center mb-6 pt-5">
+                        <div class="relative flex w-full p-1 bg-gray-50 rounded">
+
+                            <button
+                                class="relative flex-1 text-sm font-medium p-1 transition duration-150 ease-in-out focus:outline-none focus-visible:ring-2">
+                                Retrait </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Card form -->
+                    <form action="" method="post">
+
+                        {% if messages %}
+                        <div class="alert" role="alert">
+                            {% for message in messages %}
+                            {{ message }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% csrf_token %}
+                        <div x-show="card">
+                            <div class="space-y-4">
+                                <div class="max-w-sm mx-auto">
+                                    {% if accounts|length > 1 %}
+
+                                    <label for="countries"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selections
+                                        du
+                                        compte</label>
+                                    <select id="account" name="account"
+                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        <option selected>Choix du compte</option>
+                                        {% for account in accounts %}
+                                        <option value="{{ account.pk }}">{{ account.payment }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    {% else %}
+
+                                    <label for="compte" class="block mb-2 text-sm font-medium text-gray-900 ">
+                                        compte</label>
+
+                                    {% for account in accounts %}
+                                    <button
+                                        class="text-sm hidden text-gray-800 bg-white border rounded leading-5 py-2 px-3 border-gray-200 hover:border-gray-300 focus:border-indigo-300 shadow-sm placeholder-gray-400 focus:ring-0 w-full"
+                                        type="number">{{ account.payment }}</button>
+                                    <input type="text" class="hidden" name="account" value="{{ account.pk }}" id="">
+                                    <button
+                                        class="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">
+                                        {{ account.payment }}</button>
+                                    {% endfor %}
+
+                                    {% endif %}
+
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" for="card-nr">Montant<span
+                                            class="text-red-500">*</span></label>
+                                    <input id="card-nr" name="amount"
+                                        class="text-sm text-gray-800 bg-white border rounded leading-5 py-2 px-3 border-gray-200 hover:border-gray-300 focus:border-indigo-300 shadow-sm placeholder-gray-400 focus:ring-0 w-full"
+                                        type="number" placeholder="500" />
+                                </div>
+                                <!-- Expiry and CVC -->
+                                <!-- <div class="flex space-x-4">
+                                <div class="flex-1">
+                                    <label class="block text-sm font-medium mb-1" for="card-expiry">Expiry Date <span
+                                            class="text-red-500">*</span></label>
+                                    <input id="card-expiry"
+                                        class="text-sm text-gray-800 bg-white border rounded leading-5 py-2 px-3 border-gray-200 hover:border-gray-300 focus:border-indigo-300 shadow-sm placeholder-gray-400 focus:ring-0 w-full"
+                                        type="text" placeholder="MM/YY" />
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-sm font-medium mb-1" for="card-cvc">CVC <span
+                                            class="text-red-500">*</span></label>
+                                    <input id="card-cvc"
+                                        class="text-sm text-gray-800 bg-white border rounded leading-5 py-2 px-3 border-gray-200 hover:border-gray-300 focus:border-indigo-300 shadow-sm placeholder-gray-400 focus:ring-0 w-full"
+                                        type="text" placeholder="CVC" />
+                                </div>
+                            </div> -->
+
+                                <!-- Email -->
+                                <!-- <div>
+                                    <label class="block text-sm font-medium mb-1" for="card-email">Date de paie <span
+                                            class="text-red-500">*</span></label>
+                                    <input id="" name="date"
+                                        class="text-sm text-gray-800 bg-white border rounded leading-5 py-2 px-3 border-gray-200 hover:border-gray-300 focus:border-indigo-300 shadow-sm placeholder-gray-400 focus:ring-0 w-full"
+                                        type="date" placeholder="" />
+                                </div> -->
+                            </div>
+
+                            <!-- Form footer -->
+                            <div class="mt-6">
+                                <div class="mb-4">
+                                    <button
+                                        class="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">Demande
+                                        de retrait</button>
+                                </div>
+                                <div class="text-xs text-gray-500 italic text-center">You'll be charged $253, including
+                                    $48
+                                    for VAT in Italy</div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- PayPal form -->
+                    <div x-show="!card" x-cloak>
+                        <div>
+                            <div class="mb-4">
+                                <button
+                                    class="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">Pay
+                                    with PayPal - $253.00</button>
+                            </div>
+                            <div class="text-xs text-gray-500 italic text-center">You'll be charged $253, including $48
+                                for VAT in Italy</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

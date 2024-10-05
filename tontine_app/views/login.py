@@ -22,9 +22,10 @@ def signin(request):
             flag = check_password(password, user.password) 
             if flag :
                 login(request, user)
-            
-            if(user.user_type == 'customer'):
-                return redirect('/')
+     
+            if user.user_type == 'customer':
+                return redirect(f'/user_home/{user.pk}')
+
             
             if(user.user_type == 'manager'):
                 return redirect('/')

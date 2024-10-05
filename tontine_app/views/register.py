@@ -4,9 +4,10 @@ import string
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from ..models import Account
 
 def is_admin_or_manager(user):
-    return user.is_authenticated and (user.user_type == 'admin' or user.user_type == 'manager')
+    return user.is_authenticated and (user.user_type == 'admin' or user.user_type == 'manager' or  user.is_staff)
 
 admin_or_manager_required = user_passes_test(is_admin_or_manager)
 
@@ -26,7 +27,7 @@ def signup(request):
         address = request.POST.get('address')
         user_type = request.POST.get('user_type')
         password = generate_password()
-        print(password)
+        payment = request.POST.get('payment')
         if not contact:
             messages.error(request, "Contact requis")
             return redirect("/register")
@@ -51,18 +52,43 @@ def signup(request):
             messages.info(request, "Email déjà utilisé")
             return redirect("/register")
 
+        if user_type == 'customer':
+            if not payment:
+                messages.error(request, "modalité requis pour les clients")
+                return redirect("/register")
+
   
-        user = User.objects.create_user(
-                username = last_name,
+        try:
+            user = User.objects.create_user(
+                username=email, 
                 first_name=first_name,
                 last_name=last_name,
-                contact = contact,
+                contact=contact,
                 email=email,
-                sexe = sexe,
-                address = address,
+                sexe=sexe,
+                address=address,
                 password=password,
+                user_type=user_type,  
+            )
+            messages.success(request, 'Enregistrement fait avec succès')
+        except Exception as e:
+            messages.error(request, f"Erreur lors de l'enregistrement : {e}")
+            return redirect('/register')
+
+        #Création du premier compte utilisateur
+        if user.user_type == 'customer':
+            try:
+                account = Account.objects.create(
+                    user = user,
+                    payment = payment,
                 )
-        messages.info(request,'Enregistrement fait avec succès')
+            except Exception as e:
+                messages.error(request, f"Erreur lors de la création de compte : {e}" )
+                return redirect('/register')
+
+
+
+
     return render(request, "tontine_app/register.html")
 
 

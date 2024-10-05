@@ -1,0 +1,132 @@
+{% extends 'base_.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container p-5 mx-auto sm:p-4 dark:text-gray-800 overflow-x-auto">
+
+    <div class="rounded-lg bg-white p-8 md:mx-16 shadow-2xl hidden" id="validation">
+        <h2 class="text-lg font-bold">Etes vous sure de vouloir valider le retrait ?</h2>
+
+        <p class="mt-2 text-sm text-gray-500">
+            Retrait de <span class="amount"></span> au nom de <span class="name"></span>
+        </p>
+
+        <div class="mt-4 flex gap-2">
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <input type="text" class="hidden" id="input-validation" name="pk_valid" value="">
+
+                <button type="submit" class="rounded bg-green-50 px-4 py-2 text-sm font-medium text-green-600">
+                    oui
+                </button>
+            </form>
+
+            <button type="button" onclick="closeModal('validation')"
+                class="rounded bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600">
+                Non
+            </button>
+        </div>
+    </div>
+
+    <div class="rounded-lg bg-white p-8 md:mx-16 shadow-2xl hidden" id="canceled">
+        <h2 class="text-lg font-bold">Etes vous sure de vouloir annuler le retrait ?</h2>
+
+        <p class="mt-2 text-sm text-gray-500">
+            Retrait de <span class="amount-c"></span> au nom de <span class="name-c"></span>
+        </p>
+
+        <div class="mt-4 flex gap-2">
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <input type="text" class="hidden" id="input-cancel" name="pk_cancel" value="">
+
+                <button type="submit" class="rounded bg-green-50 px-4 py-2 text-sm font-medium text-green-600">
+                    oui
+                </button>
+            </form>
+
+            <button type="button" onclick="closeModal('canceled')"
+                class="rounded bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600">
+                Non
+            </button>
+        </div>
+    </div>
+    <h2 class="mb-4 text-2xl font-semibold leading-tight">Invoices</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full text-xs">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col class="w-24">
+            </colgroup>
+            <thead class="dark:bg-gray-300">
+                <tr class="text-left">
+                    <th class="p-3">Nom</th>
+                    <th class="p-3">Date de demande</th>
+                    <th class="p-3 text-right">Balance</th>
+                    <th class="p-3 text-right">Montant</th>
+                    <th class="p-3 text-right">Type</th>
+                    <th class="p-3 text-right">Validation</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr class="border-b border-opacity-20 dark:border-gray-300 dark:bg-gray-50">
+
+                    <td class="p-3">
+                        <p>{{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</p>
+                    </td>
+                    <td class="p-3">
+                        <p>{{ transaction.created_at|date:"Y-m-d" }}</p>
+                    </td>
+                    <td class="p-3 text-right">
+                        <p>{{ transaction.account.balance }}</p>
+                    </td>
+                    <td class="p-3 text-right">
+                        <p>{{ transaction.amount }}</p>
+                    </td>
+                    <td class="p-3 text-right">
+                        {% if transaction.transaction_type == 'deposit' %}
+
+                        <span class="px-3 py-1 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50">
+                            <span>Dépot</span>
+                        </span>
+
+                        {% else %}
+
+                        <span class="px-3 py-1 font-semibold rounded-md dark:bg-red-600 dark:text-gray-50">
+                            <span>{{ transaction.status }}</span>
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+                    <td class="p-3 flex  justify-between justify-center">
+
+                        <button data-pk="{{ transaction.pk }}" data-amount="{{ transaction.amount }}" data-name=" {{ transaction.customer.first_name }} {{ transaction.customer.last_name }} " onclick="openModal('canceled')"
+                        class="px-3 py-1 ml-1 font-semibold rounded-md dark:bg-red-600 dark:text-gray-50 canceled">annuler</button>
+
+
+
+                        <button data-pk="{{ transaction.pk }}" data-amount="{{ transaction.amount }}" data-name=" {{ transaction.customer.first_name }} {{ transaction.customer.last_name }} " onclick="openModal('validation')"
+                            class="px-3 py-1 ml-1 font-semibold rounded-md dark:bg-red-600 dark:text-gray-50 valider">valider</button>
+
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{% static 'js/withdraw_validation.js' %}"></script>
+
+{% endblock content %}

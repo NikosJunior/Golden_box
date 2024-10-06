@@ -14,6 +14,7 @@ from .views.add_account import add_account
 from .views.user_home import user_home
 from .views.user_account_detail import user_account_detail
 from .views.manager import manager
+from .views.logout import Logout
 
 urlpatterns = [
     path("login", signin , name="login"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path("user_home/<int:pk>", user_home , name="user_home"),
     path("user_account_detail/<int:pk>", user_account_detail , name="user_account_detail"),
     path("manager", manager , name="manager"),
+    path("logout/", Logout, name = "logout"),
 
 
 

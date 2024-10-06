@@ -2,7 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from ..models import Account, Transaction
 from django.db.models import Sum
+from django.contrib.auth.decorators import user_passes_test
 
+def is_admin_or_manager(user):
+    return user.is_authenticated and (user.user_type == 'admin' or user.user_type == 'manager' or user.is_staff)
+
+admin_or_manager_required = user_passes_test(is_admin_or_manager)
+
+@admin_or_manager_required
 def home(request):
     User = get_user_model()
     total_users = User.objects.count()

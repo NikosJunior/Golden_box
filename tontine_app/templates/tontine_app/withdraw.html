@@ -47,10 +47,10 @@
                                         du
                                         compte</label>
                                     <select id="account" name="account"
-                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5">
                                         <option selected>Choix du compte</option>
                                         {% for account in accounts %}
-                                        <option value="{{ account.pk }}">{{ account.payment }}</option>
+                                        <option value="{{ account.pk }}" class="">{{ account.payment }}</option>
                                         {% endfor %}
                                     </select>
 
@@ -112,7 +112,7 @@
                             <div class="mt-6">
                                 <div class="mb-4">
                                     <button
-                                        class="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">Demande
+                                        class="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out w-full bg-orange-500 hover:bg-orange-600 text-white focus:outline-none focus-visible:ring-2">Demande
                                         de retrait</button>
                                 </div>
                                 <div class="text-xs text-gray-500 italic text-center">You'll be charged $253, including
